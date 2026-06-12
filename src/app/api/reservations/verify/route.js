@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { checkSlot, sb, PROJECT_ID } from "../../../../lib/booking";
+import { sendConfirmationEmail } from "../../../../lib/notify";
+import siteData from "../../../../data/site-data.json";
 
 const MAX_ATTEMPTS = 5;
 
@@ -56,17 +58,25 @@ export async function POST(request) {
 
     await sb(`verification_codes?id=eq.${requestId}`, { method: "DELETE" });
 
-    return NextResponse.json({
-      confirmed: true,
-      reservation: {
-        id: inserted[0].id,
-        date: p.date,
-        time: p.time,
-        party: p.party,
-        name: p.name,
-        tableNumber: check.table ? check.table.table_number : null,
-      },
-    });
+    const confirmation = {
+      id: inserted[0].id,
+      date: p.date,
+      time: p.time,
+      party: p.party,
+      name: p.name,
+      tableNumber: check.table ? check.table.table_number : null,
+    };
+
+    // Müşteriye rezervasyon detaylarıyla onay e-postası (başarısızlık rezervasyonu bozmaz)
+    if (p.email) {
+      try {
+        await sendConfirmationEmail(p.email, confirmation, siteData.restaurant);
+      } catch (e) {
+        console.error("confirmation email failed:", e);
+      }
+    }
+
+    return NextResponse.json({ confirmed: true, reservation: confirmation });
   } catch (e) {
     console.error("verify error:", e);
     return NextResponse.json({ error: "Bestätigung fehlgeschlagen." }, { status: 500 });

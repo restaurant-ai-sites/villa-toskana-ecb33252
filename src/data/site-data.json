@@ -8,12 +8,12 @@
     "address": "Schlossstraße 22, 14059 Berlin",
     "openingHours": {
       "Montag": "Ruhetag",
-      "Dienstag": "17:30-23:00",
-      "Mittwoch": "17:30-23:00",
-      "Donnerstag": "17:30-23:00",
       "Freitag": "17:30-23:00",
       "Samstag": "17:30-23:00",
-      "Sonntag": "17:30-23:00"
+      "Sonntag": "17:30-23:00",
+      "Dienstag": "17:30-23:00",
+      "Mittwoch": "17:30-23:00",
+      "Donnerstag": "17:30-23:00"
     },
     "cuisine": "Italienische Küche",
     "priceRange": "upscale"
@@ -23,12 +23,12 @@
     "description": "Entdecken Sie die Villa Toskana in Berlin. Genießen Sie exquisite italienische Küche in stilvollem Ambiente. Reservieren Sie jetzt!"
   },
   "content": {
-    "welcomeHeading": "Herzlich Willkommen in der Villa Toskana",
-    "welcomeSubtext": "Erleben Sie italienische Genüsse in Berlin.",
-    "reservationCta": "Jetzt Tisch reservieren",
-    "orderCta": "Bestellen Sie Ihr Lieblingsgericht",
-    "contactHeading": "Kontaktieren Sie uns",
-    "footerText": "Villa Toskana - Ihr italienisches Restaurant"
+    "welcomeHeading": "",
+    "welcomeSubtext": "",
+    "reservationCta": "Tisch reservieren",
+    "orderCta": "Jetzt bestellen",
+    "contactHeading": "Kontakt",
+    "footerText": ""
   },
   "images": {
     "interior": "/images/interior_0.webp",

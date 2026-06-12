@@ -242,13 +242,32 @@ function ReservationsTab({ adminKey }) {
     load();
   }
 
+  async function autoAssign() {
+    setMsg("");
+    try {
+      const d = await api("/api/admin/reservations", adminKey, {
+        method: "PUT",
+        body: JSON.stringify({ date }),
+      });
+      setMsg(`✓ ${d.assigned} Tisch(e) zugeordnet${d.failed ? `, ${d.failed} ohne passenden Tisch` : ""}`);
+      load();
+    } catch (err) { setMsg(`⚠️ ${err.message}`); }
+  }
+
   const maxSeated = data ? Math.max(1, ...data.hourly.map((h) => h.seated)) : 1;
 
   return (
     <div className="mt-8">
-      <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
-        className={`${inputCls} max-w-xs`} />
-      {msg && <p className="mt-3 text-sm text-red-700">{msg}</p>}
+      <div className="flex flex-wrap items-center gap-3">
+        <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
+          className={`${inputCls} max-w-xs`} />
+        {data?.settings?.use_tables && (
+          <button onClick={autoAssign} className={btnCls}>
+            🪑 Tische automatisch zuordnen
+          </button>
+        )}
+      </div>
+      {msg && <p className="mt-3 text-sm">{msg}</p>}
       {!data ? (
         <p className="mt-6 text-coffee/60">Lädt…</p>
       ) : (
