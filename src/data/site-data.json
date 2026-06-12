@@ -1,0 +1,48 @@
+{
+  "restaurant": {
+    "name": "Villa Toskana",
+    "tagline": "Genussvolle Momente in der Villa Toskana",
+    "about": "Willkommen in der Villa Toskana, Ihrem italienischen Fine Dining Restaurant in Berlin. Hier verbinden sich exquisite Speisen mit einem stilvollen Ambiente. Unsere Leidenschaft für die italienische Küche spiegelt sich in jedem Gericht wider, das mit frischen, hochwertigen Zutaten zubereitet wird. Lassen Sie sich von unseren kulinarischen Kreationen verwöhnen und genießen Sie unvergessliche Momente mit Familie und Freunden. Wir freuen uns darauf, Sie in der Villa Toskana willkommen zu heißen.",
+    "phone": "030 5544 3322",
+    "email": "info@villa-toskana.de",
+    "address": "Schlossstraße 22, 14059 Berlin",
+    "openingHours": {
+      "Montag": "Ruhetag",
+      "Dienstag": "17:30-23:00",
+      "Mittwoch": "17:30-23:00",
+      "Donnerstag": "17:30-23:00",
+      "Freitag": "17:30-23:00",
+      "Samstag": "17:30-23:00",
+      "Sonntag": "17:30-23:00"
+    },
+    "cuisine": "Italienische Küche",
+    "priceRange": "upscale"
+  },
+  "seo": {
+    "title": "Villa Toskana - Italienisches Fine Dining in Berlin",
+    "description": "Entdecken Sie die Villa Toskana in Berlin. Genießen Sie exquisite italienische Küche in stilvollem Ambiente. Reservieren Sie jetzt!"
+  },
+  "content": {
+    "welcomeHeading": "Herzlich Willkommen in der Villa Toskana",
+    "welcomeSubtext": "Erleben Sie italienische Genüsse in Berlin.",
+    "reservationCta": "Jetzt Tisch reservieren",
+    "orderCta": "Bestellen Sie Ihr Lieblingsgericht",
+    "contactHeading": "Kontaktieren Sie uns",
+    "footerText": "Villa Toskana - Ihr italienisches Restaurant"
+  },
+  "images": {
+    "interior": "/images/interior_0.webp",
+    "food": "/images/food_4.webp",
+    "hero": "/images/hero_generated.webp"
+  },
+  "features": {
+    "hasReservation": true,
+    "hasOrdering": false,
+    "paypalClientId": ""
+  },
+  "menu": [],
+  "legal": {
+    "impressum": "## Impressum\n\n**Angaben gemäß § 5 TMG**\n\nVilla Toskana\nSchlossstraße 22, 14059 Berlin\n030 5544 3322\ninfo@villa-toskana.de\n\n**Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV:**\nVilla Toskana\n\n**Haftungsausschluss:**\nDie Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.\n\n**Urheberrecht:**\nDie durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.\n",
+    "datenschutz": "## Datenschutzerklärung\n\n**1. Datenschutz auf einen Blick**\n\nDiese Datenschutzerklärung klärt Sie über die Art, den Umfang und Zweck der Verarbeitung von personenbezogenen Daten auf unserer Website auf.\n\n**2. Verantwortliche Stelle**\n\nVilla Toskana\nSchlossstraße 22, 14059 Berlin\nE-Mail: info@villa-toskana.de\n\n**3. Erhebung und Speicherung personenbezogener Daten**\n\nBeim Besuch unserer Website werden automatisch Informationen allgemeiner Natur erfasst (Server-Log-Dateien). Diese Daten erlauben keine Rückschlüsse auf Ihre Person.\n\n**4. Kontaktformular**\n\nWenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen gespeichert.\n\n**5. Cookies**\n\nUnsere Website verwendet Cookies. Durch die Nutzung unserer Website erklären Sie sich damit einverstanden.\n\n**6. Ihre Rechte**\n\nSie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung oder Einschränkung der Verarbeitung Ihrer gespeicherten personenbezogenen Daten.\n\n**7. Kontakt Datenschutzbeauftragter**\n\nBei Fragen zum Datenschutz wenden Sie sich an: info@villa-toskana.de\n"
+  }
+}
