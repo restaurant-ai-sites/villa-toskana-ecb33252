@@ -7,7 +7,7 @@ const MAX_CODES_PER_HOUR = 3;
 
 export async function POST(request) {
   try {
-    const { date, time, party, name, email, phone, requests } = await request.json();
+    const { date, time, party, name, email, phone, requests, category } = await request.json();
 
     if (!date || !time || !party || !name) {
       return NextResponse.json({ error: "Bitte füllen Sie alle Pflichtfelder aus." }, { status: 400 });
@@ -47,7 +47,7 @@ export async function POST(request) {
         project_id: PROJECT_ID,
         contact,
         code,
-        payload: { date, time, party: Number(party), name, email: email || "", phone: phone || "", requests: requests || "" },
+        payload: { date, time, party: Number(party), name, email: email || "", phone: phone || "", requests: requests || "", category: category || null },
         expires_at: new Date(Date.now() + 10 * 60_000).toISOString(),
       }),
     });

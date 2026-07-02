@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { sb, PROJECT_ID, getSettings } from "../../../../lib/booking";
-import { isAdmin, unauthorized } from "../../../../lib/admin";
+import { isAdmin, isMasterAdmin, unauthorized } from "../../../../lib/admin";
 import { smsConfigured } from "../../../../lib/notify";
 
 export async function GET(request) {
   if (!isAdmin(request)) return unauthorized();
   const settings = await getSettings();
-  return NextResponse.json({ settings, smsAvailable: smsConfigured() });
+  return NextResponse.json({
+    settings,
+    smsAvailable: smsConfigured(),
+    isMasterAdmin: isMasterAdmin(request),
+  });
 }
 
 export async function PUT(request) {

@@ -50,6 +50,7 @@ export async function POST(request) {
         reservation_time: p.time,
         party_size: p.party,
         special_requests: p.requests || null,
+        category: p.category || null,
         status: "confirmed",
         verified: true,
         table_id: check.table ? check.table.id : null,

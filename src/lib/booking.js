@@ -12,7 +12,7 @@
 import siteData from "../data/site-data.json";
 
 const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SB_KEY = process.env.SUPABASE_SECRET_KEY;
+const SB_KEY = process.env.SUPABASE_SECRET_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 export const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
 
 export async function sb(path, init = {}) {

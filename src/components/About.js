@@ -2,7 +2,7 @@ import siteData from "../data/site-data.json";
 
 export default function About() {
   const { restaurant, images } = siteData;
-  const sideImage = images.interior || images.food || images.exterior;
+  const sideImage = images.about || images.interior || images.food || images.exterior;
 
   return (
     <section id="ueber-uns" className="mx-auto max-w-5xl px-4 py-20">
