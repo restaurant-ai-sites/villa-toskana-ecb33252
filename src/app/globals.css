@@ -9,3 +9,38 @@ html {
 body {
   @apply bg-cream text-coffee font-body antialiased;
 }
+
+
+/* --- Modern polish: reveal animasyonlari ve efektler --- */
+::selection {
+  background: rgba(180, 83, 50, 0.9);
+  color: #fff;
+}
+
+.reveal-ready main section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal-ready main section.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes heroZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes bounceDown {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-ready main section { opacity: 1; transform: none; transition: none; }
+}
