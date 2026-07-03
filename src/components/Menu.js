@@ -6,6 +6,7 @@ import siteData from "../data/site-data.json";
 export default function Menu() {
   const [gallery, setGallery] = useState([]);
   const [sections, setSections] = useState([]);
+  const [speisekarte, setSpeisekarte] = useState(null);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -13,6 +14,7 @@ export default function Menu() {
       .then((r) => r.json())
       .then((data) => {
         setGallery(data.gallery || []);
+        setSpeisekarte(data.speisekarte || null);
         if (data.sections?.length > 0) {
           setSections(data.sections);
         } else {
@@ -58,8 +60,13 @@ export default function Menu() {
           </div>
         )}
 
-        {/* Static hero image fallback when no gallery */}
-        {gallery.length === 0 && (siteData.images?.food || siteData.images?.gallery_1) && (
+        {/* Speisekarte banner image */}
+        {speisekarte && (
+          <img src={speisekarte} alt="Unsere Speisekarte"
+            className="mt-10 h-64 w-full rounded-2xl object-cover shadow-lg" />
+        )}
+        {/* Static hero image fallback when no gallery and no speisekarte */}
+        {!speisekarte && gallery.length === 0 && (siteData.images?.food || siteData.images?.gallery_1) && (
           <img
             src={siteData.images.food || siteData.images.gallery_1}
             alt="Unsere Gerichte"

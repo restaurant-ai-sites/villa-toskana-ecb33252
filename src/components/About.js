@@ -1,7 +1,26 @@
 import siteData from "../data/site-data.json";
 
-export default function About() {
-  const { restaurant, images } = siteData;
+async function getImageOverrides() {
+  const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const SB_KEY = process.env.SUPABASE_SECRET_KEY;
+  const PROJECT_ID = process.env.NEXT_PUBLIC_PROJECT_ID;
+  if (!SB_URL || !SB_KEY || !PROJECT_ID) return {};
+  try {
+    const res = await fetch(
+      `${SB_URL}/rest/v1/site_images?project_id=eq.${PROJECT_ID}&select=image_key,url`,
+      { headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}` }, cache: "no-store" }
+    );
+    const rows = await res.json();
+    const map = {};
+    (rows || []).forEach((r) => { map[r.image_key] = r.url; });
+    return map;
+  } catch { return {}; }
+}
+
+export default async function About() {
+  const { restaurant, images: defaultImages } = siteData;
+  const overrides = await getImageOverrides();
+  const images = { ...defaultImages, ...overrides };
   const sideImage = images.about || images.interior || images.food || images.exterior;
 
   return (

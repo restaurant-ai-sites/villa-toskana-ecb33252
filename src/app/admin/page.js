@@ -98,9 +98,12 @@ export default function AdminPage() {
 const IMAGE_SLOTS = [
   { key: "hero", label: "Hero (Kapak Fotoğrafı)" },
   { key: "about", label: "Hakkımızda Görseli" },
+  { key: "speisekarte", label: "Speisekarte Görseli" },
   { key: "gallery_1", label: "Galeri 1" },
   { key: "gallery_2", label: "Galeri 2" },
   { key: "gallery_3", label: "Galeri 3" },
+  { key: "gallery_4", label: "Galeri 4" },
+  { key: "gallery_5", label: "Galeri 5" },
 ];
 
 function BilderTab({ adminKey }) {

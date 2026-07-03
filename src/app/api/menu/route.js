@@ -3,9 +3,10 @@ import { sb, PROJECT_ID } from "../../../lib/booking";
 
 export async function GET() {
   try {
-    const [galleryRows, sections] = await Promise.all([
+    const [galleryRows, sections, speisekarteRows] = await Promise.all([
       sb(`site_images?project_id=eq.${PROJECT_ID}&in_menu_gallery=eq.true&order=sort_order.asc,created_at.asc`).catch(() => []),
       sb(`menu_sections?project_id=eq.${PROJECT_ID}&is_active=eq.true&order=sort_order.asc,created_at.asc`).catch(() => []),
+      sb(`site_images?project_id=eq.${PROJECT_ID}&image_key=eq.speisekarte&select=url`).catch(() => []),
     ]);
 
     let items = [];
@@ -21,7 +22,8 @@ export async function GET() {
       items: (items || []).filter((i) => i.section_id === s.id),
     }));
 
-    return NextResponse.json({ gallery: galleryRows || [], sections: sectionsWithItems });
+    const speisekarte = speisekarteRows?.[0]?.url || null;
+    return NextResponse.json({ gallery: galleryRows || [], sections: sectionsWithItems, speisekarte });
   } catch {
     return NextResponse.json({ gallery: [], sections: [] });
   }
