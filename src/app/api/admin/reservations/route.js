@@ -35,6 +35,55 @@ export async function GET(request) {
   return NextResponse.json({ settings, tables, reservations, hourly });
 }
 
+/** Manuel rezervasyon girişi (telefonla gelenler) — doğrulama yok, direkt onaylı.
+ *  Restoran sahibi girdiği için online kurallar (son dakika engeli vb.) uygulanmaz;
+ *  masa modu açıksa boş masa varsa otomatik atanır. */
+export async function POST(request) {
+  if (!isAdmin(request)) return unauthorized();
+  try {
+    const { name, phone, date, time, party, requests } = await request.json();
+    if (!name || !date || !time || !party) {
+      return NextResponse.json({ error: "Name, Datum, Uhrzeit und Personenzahl sind erforderlich." }, { status: 400 });
+    }
+
+    const settings = await getSettings();
+    let tableId = null;
+    if (settings.use_tables) {
+      const [tables, reservations] = await Promise.all([getTables(), getReservations(date)]);
+      const table = findFreeTable(
+        tables,
+        reservations.filter((r) => r.status !== "cancelled"),
+        minutesOf(time.slice(0, 5)),
+        Number(party),
+        blockMinutes(settings)
+      );
+      if (table) tableId = table.id;
+    }
+
+    const rows = await sb("reservations", {
+      method: "POST",
+      body: JSON.stringify({
+        project_id: PROJECT_ID,
+        guest_name: name,
+        guest_email: null,
+        guest_phone: phone || null,
+        reservation_date: date,
+        reservation_time: time,
+        party_size: Number(party),
+        special_requests: requests ? `[Telefonisch] ${requests}` : "[Telefonisch]",
+        status: "confirmed",
+        verified: true,
+        table_id: tableId,
+      }),
+    });
+
+    return NextResponse.json({ ok: true, reservation: rows?.[0], table_assigned: !!tableId });
+  } catch (e) {
+    console.error("manual reservation error:", e);
+    return NextResponse.json({ error: "Reservierung konnte nicht angelegt werden." }, { status: 500 });
+  }
+}
+
 /** Atanmamış rezervasyonları masalara otomatik dağıt */
 export async function PUT(request) {
   if (!isAdmin(request)) return unauthorized();

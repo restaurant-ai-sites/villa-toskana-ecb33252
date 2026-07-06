@@ -783,16 +783,49 @@ function KategorienTab({ adminKey }) {
   );
 }
 
+const emptyManualForm = { name: "", phone: "", time: "", party: "2", requests: "" };
+
 function ReservationsTab({ adminKey }) {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [data, setData] = useState(null);
   const [msg, setMsg] = useState("");
+  const [showManual, setShowManual] = useState(false);
+  const [manual, setManual] = useState(emptyManualForm);
+  const [manualSaving, setManualSaving] = useState(false);
 
   const load = useCallback(
     () => api(`/api/admin/reservations?date=${date}`, adminKey).then(setData).catch((e) => setMsg(e.message)),
     [adminKey, date]
   );
   useEffect(() => { load(); }, [load]);
+
+  async function addManual(e) {
+    e.preventDefault();
+    if (!manual.name.trim() || !manual.time) return;
+    setManualSaving(true);
+    setMsg("");
+    try {
+      const d = await api("/api/admin/reservations", adminKey, {
+        method: "POST",
+        body: JSON.stringify({
+          name: manual.name.trim(),
+          phone: manual.phone.trim(),
+          date,
+          time: manual.time,
+          party: Number(manual.party) || 1,
+          requests: manual.requests.trim(),
+        }),
+      });
+      setMsg(d.table_assigned ? "✓ Reservierung angelegt — Tisch automatisch zugeordnet." : "✓ Reservierung angelegt.");
+      setManual(emptyManualForm);
+      setShowManual(false);
+      load();
+    } catch (err) {
+      setMsg(`⚠️ ${err.message}`);
+    } finally {
+      setManualSaving(false);
+    }
+  }
 
   async function changeTable(id, table_id) {
     setMsg("");
@@ -833,12 +866,48 @@ function ReservationsTab({ adminKey }) {
       <div className="flex flex-wrap items-center gap-3">
         <input type="date" value={date} onChange={(e) => setDate(e.target.value)}
           className={`${inputCls} max-w-xs`} />
+        <button onClick={() => setShowManual((p) => !p)} className={btnCls}>
+          📞 Manuelle Reservierung
+        </button>
         {data?.settings?.use_tables && (
           <button onClick={autoAssign} className={btnCls}>
             🪑 Tische automatisch zuordnen
           </button>
         )}
       </div>
+
+      {showManual && (
+        <form onSubmit={addManual} className="mt-4 border border-coffee/15 bg-sand/30 p-4 space-y-3">
+          <p className="text-sm font-semibold text-coffee">
+            Telefonische Reservierung für {new Date(`${date}T12:00:00`).toLocaleDateString("de-DE")} eintragen
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input type="text" placeholder="Name *" value={manual.name}
+              onChange={(e) => setManual((p) => ({ ...p, name: e.target.value }))} className={inputCls} />
+            <input type="tel" placeholder="Telefon (optional)" value={manual.phone}
+              onChange={(e) => setManual((p) => ({ ...p, phone: e.target.value }))} className={inputCls} />
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <input type="time" value={manual.time} required
+              onChange={(e) => setManual((p) => ({ ...p, time: e.target.value }))} className={inputCls} />
+            <input type="number" min="1" max="50" placeholder="Personen *" value={manual.party}
+              onChange={(e) => setManual((p) => ({ ...p, party: e.target.value }))} className={inputCls} />
+          </div>
+          <input type="text" placeholder="Anmerkung (optional)" value={manual.requests}
+            onChange={(e) => setManual((p) => ({ ...p, requests: e.target.value }))} className={inputCls} />
+          <div className="flex items-center gap-3">
+            <button type="submit" disabled={manualSaving || !manual.name.trim() || !manual.time} className={btnCls}>
+              {manualSaving ? "Wird angelegt…" : "✓ Eintragen"}
+            </button>
+            <button type="button" onClick={() => { setShowManual(false); setManual(emptyManualForm); }}
+              className="text-sm text-coffee/60 hover:text-coffee">
+              Abbrechen
+            </button>
+            <span className="text-xs text-coffee/50">Keine Bestätigung nötig — wird sofort als bestätigt gespeichert.</span>
+          </div>
+        </form>
+      )}
+
       {msg && <p className="mt-3 text-sm">{msg}</p>}
       {!data ? (
         <p className="mt-6 text-coffee/60">Lädt…</p>
