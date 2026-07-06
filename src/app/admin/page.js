@@ -783,7 +783,7 @@ function KategorienTab({ adminKey }) {
   );
 }
 
-const emptyManualForm = { name: "", phone: "", time: "", party: "2", requests: "" };
+const emptyManualForm = { name: "", phone: "", time: "", party: "2", requests: "", category: "" };
 
 function ReservationsTab({ adminKey }) {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
@@ -792,12 +792,21 @@ function ReservationsTab({ adminKey }) {
   const [showManual, setShowManual] = useState(false);
   const [manual, setManual] = useState(emptyManualForm);
   const [manualSaving, setManualSaving] = useState(false);
+  const [categories, setCategories] = useState([]);
 
   const load = useCallback(
     () => api(`/api/admin/reservations?date=${date}`, adminKey).then(setData).catch((e) => setMsg(e.message)),
     [adminKey, date]
   );
   useEffect(() => { load(); }, [load]);
+
+  // Seçili tarihte geçerli kategorileri çek (yoksa dropdown gizlenir)
+  useEffect(() => {
+    fetch(`/api/reservations/categories?date=${date}`)
+      .then((r) => r.json())
+      .then((d) => setCategories(d.categories || []))
+      .catch(() => setCategories([]));
+  }, [date]);
 
   async function addManual(e) {
     e.preventDefault();
@@ -814,6 +823,7 @@ function ReservationsTab({ adminKey }) {
           time: manual.time,
           party: Number(manual.party) || 1,
           requests: manual.requests.trim(),
+          category: manual.category || null,
         }),
       });
       setMsg(d.table_assigned ? "✓ Reservierung angelegt — Tisch automatisch zugeordnet." : "✓ Reservierung angelegt.");
@@ -893,6 +903,15 @@ function ReservationsTab({ adminKey }) {
             <input type="number" min="1" max="50" placeholder="Personen *" value={manual.party}
               onChange={(e) => setManual((p) => ({ ...p, party: e.target.value }))} className={inputCls} />
           </div>
+          {categories.length > 0 && (
+            <select value={manual.category}
+              onChange={(e) => setManual((p) => ({ ...p, category: e.target.value }))} className={inputCls}>
+              <option value="">Keine Kategorie</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.name}>{c.name}</option>
+              ))}
+            </select>
+          )}
           <input type="text" placeholder="Anmerkung (optional)" value={manual.requests}
             onChange={(e) => setManual((p) => ({ ...p, requests: e.target.value }))} className={inputCls} />
           <div className="flex items-center gap-3">

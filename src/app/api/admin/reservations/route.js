@@ -41,7 +41,7 @@ export async function GET(request) {
 export async function POST(request) {
   if (!isAdmin(request)) return unauthorized();
   try {
-    const { name, phone, date, time, party, requests } = await request.json();
+    const { name, phone, date, time, party, requests, category } = await request.json();
     if (!name || !date || !time || !party) {
       return NextResponse.json({ error: "Name, Datum, Uhrzeit und Personenzahl sind erforderlich." }, { status: 400 });
     }
@@ -71,6 +71,7 @@ export async function POST(request) {
         reservation_time: time,
         party_size: Number(party),
         special_requests: requests ? `[Telefonisch] ${requests}` : "[Telefonisch]",
+        category: category || null,
         status: "confirmed",
         verified: true,
         table_id: tableId,
